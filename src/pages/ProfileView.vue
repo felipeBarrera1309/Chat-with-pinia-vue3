@@ -1,18 +1,23 @@
+<template>
+    <div class="profile">
+        <div class="box">
+            <img src="/avatars/avatar.jpg" alt="avatar" />
+            <label for="username">Nombre de usuario</label>
+            <input type="text" placeholder="Jane Smith" v-model="username" />
+            <button @click="$router.push('/')">Acceder</button>
+        </div>
+    </div>
+</template>
+
+
 <script setup>
 import { ref } from 'vue'
-const username = ref('')
-</script>
+import usernameProfile from '../stores/profile.js';
 
-<template>
-  <div class="profile">
-    <div class="box">
-      <img src="/avatars/avatar.jpg" alt="avatar" />
-      <label for="username">Nombre de usuario</label>
-      <input type="text" placeholder="Jane Smith" v-model="username" />
-      <button @click="$router.push('/')">Acceder</button>
-    </div>
-  </div>
-</template>
+const username = ref(usernameProfile().username)
+
+
+</script>
 
 <style lang="scss" scoped>
 .profile {

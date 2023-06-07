@@ -1,6 +1,17 @@
 <script setup>
-defineProps(['modelValue'])
-defineEmits(['update:modelValue'])
+const props = defineProps({
+    modelValue:{
+      type: String,
+      default: ''
+    }
+})
+
+function updateSearch(newValue){
+  emit('update:modelValue', newValue)
+}
+
+const emit = defineEmits(['update:modelValue'])
+
 </script>
 
 <template>
@@ -9,7 +20,7 @@ defineEmits(['update:modelValue'])
       type="text"
       placeholder="Buscar"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="updateSearch($event.target.value)"
     />
     <button>
       <Icon icon="carbon:search" />

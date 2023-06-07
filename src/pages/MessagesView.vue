@@ -1,41 +1,63 @@
+<template>
+    <div class="messages">
+        <header>
+            <h2>{{ title }}</h2>
+            <div class="people-list">
+                <div
+                  class="people-item"
+                  v-for="p in people"
+                  :key="p.id"
+              >
+                  <img :src="p.avatar" :alt="p.name" />
+              </div>
+            </div>
+        </header>
+        <div class="content">
+            <MessageItem
+              v-for="message in messagesView"
+              :key="message.id"
+              :avatar="message.author.avatar"
+              :author="message.author.name"
+              :message="message.message"
+              :time="message.timestamp"
+              :is-self="message.self"
+            />
+            <span ref="end"></span>
+        </div>
+        <footer>
+            <textarea rows="3"></textarea>
+            <button>
+              <Icon icon="carbon:send-alt" />
+            </button>
+        </footer>
+    </div>
+</template>
+
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageItem from '@/components/MessageItem.vue'
+import useMessagesStore from '../stores/messages.js';
+import useProfileStore from '../stores/profile.js';
 
 const route = useRoute()
 
 const end = ref(null)
 const channelId = ref(null)
 const title = ref('')
-const people = reactive([
-  { id: 1, name: 'Tú', avatar: '/avatars/avatar.jpg' },
-  { id: 2, name: 'Jason', avatar: '/avatars/avatar-02.jpg' },
-  { id: 3, name: 'Janet', avatar: '/avatars/avatar-03.jpg' }
-])
-const messages = reactive([
-  { id: 1, author: 1, message: 'Hola 👀', timestamp: new Date().toLocaleTimeString() },
-  { id: 2, author: 2, message: 'Holaaa!!!', timestamp: new Date().toLocaleTimeString() },
-  { id: 3, author: 3, message: 'Hola a todo el mundo 😊', timestamp: new Date().toLocaleTimeString() },
-  { id: 4, author: 3, message: '¿Cómo están?', timestamp: new Date().toLocaleTimeString() },
-  { id: 5, author: 1, message: 'Todo muy bien :D', timestamp: new Date().toLocaleTimeString() },
-  { id: 6, author: 2, message: 'Si, todo bien.', timestamp: new Date().toLocaleTimeString() },
-  { id: 7, author: 1, message: 'Oigan, les escribo para contarles algo... 😌', timestamp: new Date().toLocaleTimeString() },
-  { id: 8, author: 3, message: 'A vers 👀', timestamp: new Date().toLocaleTimeString() },
-  { id: 9, author: 2, message: 'Ahhhh!!', timestamp: new Date().toLocaleTimeString() },
-  { id: 10, author: 2, message: '¡Cuenta ese chismesito yaaaa!', timestamp: new Date().toLocaleTimeString() },
-  { id: 11, author: 1, message: 'Pues, ¡acabamos de lanzar los nuevos cursos de Vue.js!', timestamp: new Date().toLocaleTimeString() },
-])
+const people = reactive()
 
-const messagesView = computed(() => messages.map((message) => {
-  const author = people.find((p) => p.id === message.author)
-  if (!author) return message;
+const messagesView = computed(() => {
+  return useMessagesStore().messages.map(element => {
+    const imAuthor = useProfileStore()
+    if(imAuthor.id !== element.author) return element
     return {
-    ...message,
-    author,
-    self: author.id === 1
-  }
-}))
+      ...element,
+      imAuthor,
+      self: imAuthor.id === element.author
+    }
+  })
+})
 
 const scrollToBottom = () => {
   end.value?.scrollIntoView({
@@ -54,41 +76,6 @@ watch(
 
 scrollToBottom()
 </script>
-
-<template>
-  <div class="messages">
-    <header>
-      <h2>{{ title }}</h2>
-      <div class="people-list">
-        <div
-          class="people-item"
-          v-for="p in people"
-          :key="p.id"
-        >
-          <img :src="p.avatar" :alt="p.name" />
-        </div>
-      </div>
-    </header>
-    <div class="content">
-      <MessageItem
-        v-for="message in messagesView"
-        :key="message.id"
-        :avatar="message.author.avatar"
-        :author="message.author.name"
-        :message="message.message"
-        :time="message.timestamp"
-        :is-self="message.self"
-      />
-      <span ref="end"></span>
-    </div>
-    <footer>
-      <textarea rows="3"></textarea>
-      <button>
-        <Icon icon="carbon:send-alt" />
-      </button>
-    </footer>
-  </div>
-</template>
 
 <style lang="scss" scoped>
 .messages {

@@ -1,7 +1,3 @@
-<script setup>
-defineProps(['avatar', 'author', 'time', 'message', 'is-self'])
-</script>
-
 <template>
   <div class="message-item" :class="{ self: isSelf }">
     <div class="author">
@@ -16,6 +12,34 @@ defineProps(['avatar', 'author', 'time', 'message', 'is-self'])
     </div>
   </div>
 </template>
+
+<script setup>
+
+const props = defineProps({
+    avatar:{
+      type: String,
+      default: ''
+    },
+    author: {
+      type: String,
+      default: ''
+    },
+    time:{
+      type: String,
+      default: ''
+    },
+    message:{
+      type: String,
+      default: ''
+    },
+    isSelf:{
+      type: Boolean,
+      default: false
+    }
+})
+
+
+</script>
 
 <style lang="scss" scoped>
 .message-item {

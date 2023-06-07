@@ -1,10 +1,25 @@
 <script setup>
 import { RouterLink } from 'vue-router'
-defineProps(['id', 'name', 'messages'])
+
+const props = defineProps({
+  id: {
+    type: Number,
+    default: 0
+  },
+  name:{
+    type: String,
+    default: ''
+  },
+  messages:{
+    type: Number,
+    default: 0
+  }
+})
+
 </script>
 
 <template>
-  <RouterLink 
+  <RouterLink
     :to="`${id}`"
     class="chat-item"
   >
