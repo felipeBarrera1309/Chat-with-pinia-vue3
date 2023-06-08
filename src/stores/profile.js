@@ -4,9 +4,9 @@ import { defineStore } from 'pinia';
 const store = defineStore('profile',{
     state: () => ({
         id: 1,
-        username: 'felipeBarrera1309',
+        username: '',
         avatar: '/public/avatars/avatar.jpg',
-        status: 'active'
+        status: null
     })
 })
 

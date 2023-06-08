@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import useProfile from './profile.js';
 
 
 const messages = defineStore('messages', {
@@ -25,6 +26,31 @@ const messages = defineStore('messages', {
         },
         findMessagesUnread: (state) => (channelId) => {
             return state.findMessageByID(channelId).filter(messages => !messages.read).length
+        }
+    },
+    actions: {
+        addMessagesToChannel(idChat, seeMessage){
+            this.messages.push({
+                id: Math.floor(Math.random() * 50),
+                author: useProfile().id,
+                timestamp: new Date().toLocaleDateString(),
+                message: seeMessage,
+                channelId: idChat,
+                read: false
+            })
+        },
+        messagesAllowed(idi){
+            this.messages = this.messages.map(el => {
+                if(idi === el.channelId){
+                    return {
+                        ...el,
+                        read: true
+                    }
+                }
+                return {
+                    ...el
+                }
+            })
         }
     }
 })

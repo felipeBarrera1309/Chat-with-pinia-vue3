@@ -24,12 +24,12 @@
             />
             <span ref="end"></span>
         </div>
-        <footer>
-            <textarea rows="3" @keypress.enter="writeMessage($event.target.value)" ></textarea>
+        <form class="footer" @submit.prevent="addMessage">
+            <textarea rows="3" v-model="write" @keypress.enter="addMessage" />
             <button>
               <Icon icon="carbon:send-alt" />
             </button>
-        </footer>
+        </form>
     </div>
 </template>
 
@@ -49,8 +49,11 @@ const title = ref('')
 const people = reactive(useContacts().getContacts)
 const write = ref('')
 
-function writeMessage(value){
-  console.log('valor del textTarea: ', value);
+function addMessage(value){
+  if(write.value.trim() !== ''){
+      useMessagesStore().addMessagesToChannel(Number(route.params.id), write.value);
+      write.value = ''
+  }
 }
 
 const messagesView = computed(() => {
@@ -75,7 +78,7 @@ watch(
   () => route.params.id,
   (id) => {
     channelId.value = id
-    title.value = useChannelName().seeNameChannel(Number(id)).name
+    title.value = useChannelName().seeNameChannel(Number(id))?.name
     scrollToBottom()
   },
   { immediate: true }
@@ -105,7 +108,7 @@ scrollToBottom()
   .content {
     @apply flex flex-col gap-4 p-4 h-full overflow-y-auto;
   }
-  footer {
+  .footer {
     @apply flex p-2;
     textarea {
       @apply w-full px-2 py-2 resize-none bg-zinc-800 rounded-tl-md rounded-bl-md focus:outline-none;

@@ -7,7 +7,6 @@ const contacs = defineStore('contacts', {
             contacts: [
                 { id: 2, name: 'Jason', avatar: '/avatars/avatar-02.jpg' },
                 { id: 3, name: 'Janet', avatar: '/avatars/avatar-03.jpg' },
-                { id: 4, name: 'Janet', avatar: '/avatars/avatar-04.jpg' },
             ]
         }
     },
@@ -24,10 +23,13 @@ const contacs = defineStore('contacts', {
         },
         getContacts: (state) => {
             let array = []
-            array.unshift({ avatar: useProfile().avatar })
+            array.unshift({
+                id: useProfile().id,
+                name: useProfile().username,
+                avatar: useProfile().avatar
+            })
             state.contacts.forEach(el => {
-                const { avatar: avatarContacts } = el
-                array.push({ avatar: avatarContacts })
+                array.push(el)
             })
             return array
         }

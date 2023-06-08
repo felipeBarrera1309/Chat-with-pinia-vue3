@@ -7,7 +7,7 @@
               :username="profile.username"
               :status="profile.status"
             />
-          <RouterLink to="/" class="channels-title">Canales <Icon icon="carbon:hashtag" /></RouterLink>
+          <div class="channels-title" @click="toGoHome" >Canales <Icon icon="carbon:hashtag" /></div>
           <div class="channels">
               <ChatItem
                 v-for="channel in searchMessages(search)"
@@ -19,29 +19,42 @@
           </div>
         </aside>
         <main>
-          <RouterView />
+          <router-view />
         </main>
     </div>
 </template>
 
 <script setup>
-import { RouterView, RouterLink, useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import InputSearch from '@/components/InputSearch.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
 import ChatItem from '@/components/ChatItem.vue'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import profileStore   from '../stores/profile.js';
 import channelsStore from '../stores/channels.js';
-import useMessagesUnread from '../stores/messages.js';
+import useMessagesStore from '../stores/messages.js';
 
 const search = ref('')
 const route = useRoute()
+const router = useRouter()
 
 const profile = profileStore()
 const channels = reactive()
 
 function searchMessages(search){
-    return channelsStore().findChannel(search)
+    return channelsStore()?.findChannel(search)
+}
+
+watch(
+  () => route.params.id,
+  (newIdi) => {
+    useMessagesStore().messagesAllowed(Number(newIdi))
+  },
+  { immediate: true }
+)
+
+function toGoHome(){
+  router.push({ name: 'homeMain' })
 }
 
 </script>

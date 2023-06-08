@@ -1,11 +1,11 @@
 <template>
-    <RouterLink
+    <router-link
       :to="`${id}`"
       class="chat-item"
     >
       <h5>{{ name }}</h5>
       <div class="badge" v-if="messages">{{ messages }}</div>
-    </RouterLink>
+    </router-link>
 </template>
 
 
@@ -29,14 +29,34 @@ const props = defineProps({
 
 </script>
 
-<style lang="scss" scoped>
-.chat-item {
-  @apply flex px-3 py-2 text-neutral-800 rounded-lg hover:bg-neutral-900;
-  h5 {
-    @apply w-full text-neutral-300;
-  }
-  .badge {
-    @apply flex justify-center items-center leading-none font-bold text-xs px-3 text-gray-200 rounded-2xl bg-neutral-600;
-  }
+<style lang="css" scoped>
+
+.chat-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    padding: 0px 15px;
+    border-radius: 20px;
+    transition: 0.3s ease-in-out;
 }
+.chat-item:hover{
+  background-color: rgb(53, 53, 56);
+}
+
+.chat-item .router-link-active, .router-link-exact-active{
+  background-color: rgb(53, 53, 56);
+}
+
+.chat-item .badge{
+  height: 20px;
+  width: 20px;
+  padding: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(53, 53, 56);
+}
+
 </style>
