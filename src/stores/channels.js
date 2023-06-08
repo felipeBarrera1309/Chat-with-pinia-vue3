@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import messages from './messages';
+import useMessages from './messages.js';
+
 
 const channels = defineStore('channels', {
     state: () => ({
@@ -17,7 +18,15 @@ const channels = defineStore('channels', {
             return state.channels
             .filter(el => {
                 return el.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+            }).map(el => {
+                return {
+                    ...el,
+                    messages: useMessages().findMessagesUnread(el.id)
+                }
             })
+        },
+        seeNameChannel: (state) => (id) => {
+            return state.channels.find(el => el.id === id)
         }
     }
 })

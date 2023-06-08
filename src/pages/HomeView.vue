@@ -10,7 +10,7 @@
           <RouterLink to="/" class="channels-title">Canales <Icon icon="carbon:hashtag" /></RouterLink>
           <div class="channels">
               <ChatItem
-                v-for="channel in channelsStore().findChannel(search)"
+                v-for="channel in searchMessages(search)"
                 :key="channel.id"
                 :id="channel.id"
                 :name="channel.name"
@@ -29,7 +29,7 @@ import { RouterView, RouterLink, useRoute } from 'vue-router'
 import InputSearch from '@/components/InputSearch.vue'
 import ProfileCard from '@/components/ProfileCard.vue'
 import ChatItem from '@/components/ChatItem.vue'
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import profileStore   from '../stores/profile.js';
 import channelsStore from '../stores/channels.js';
 import useMessagesUnread from '../stores/messages.js';
@@ -39,6 +39,10 @@ const route = useRoute()
 
 const profile = profileStore()
 const channels = reactive()
+
+function searchMessages(search){
+    return channelsStore().findChannel(search)
+}
 
 </script>
 

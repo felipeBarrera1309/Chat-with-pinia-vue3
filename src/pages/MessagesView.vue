@@ -16,8 +16,8 @@
             <MessageItem
               v-for="message in messagesView"
               :key="message.id"
-              :avatar="message.author.avatar"
-              :author="message.author.name"
+              :avatar="message.imAuthor.avatar"
+              :author="message.imAuthor.name"
               :message="message.message"
               :time="message.timestamp"
               :is-self="message.self"
@@ -25,7 +25,7 @@
             <span ref="end"></span>
         </div>
         <footer>
-            <textarea rows="3"></textarea>
+            <textarea rows="3" @keypress.enter="writeMessage($event.target.value)" ></textarea>
             <button>
               <Icon icon="carbon:send-alt" />
             </button>
@@ -38,23 +38,29 @@ import { ref, reactive, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageItem from '@/components/MessageItem.vue'
 import useMessagesStore from '../stores/messages.js';
-import useProfileStore from '../stores/profile.js';
+import useContacts from '../stores/contacs.js';
+import useChannelName from '../stores/channels.js';
 
 const route = useRoute()
 
 const end = ref(null)
 const channelId = ref(null)
 const title = ref('')
-const people = reactive()
+const people = reactive(useContacts().getContacts)
+const write = ref('')
+
+function writeMessage(value){
+  console.log('valor del textTarea: ', value);
+}
 
 const messagesView = computed(() => {
   return useMessagesStore().findMessageByID(Number(channelId.value)).map(element => {
-    const imAuthor = useProfileStore()
-    if(imAuthor.id !== element.author) return element
+    const imAuthor = useContacts().getContactById(element.author)
+    if(!imAuthor) return element
     return {
       ...element,
       imAuthor,
-      self: imAuthor.id === element.author
+      self: imAuthor.id === 1
     }
   })
 })
@@ -69,6 +75,7 @@ watch(
   () => route.params.id,
   (id) => {
     channelId.value = id
+    title.value = useChannelName().seeNameChannel(Number(id)).name
     scrollToBottom()
   },
   { immediate: true }
