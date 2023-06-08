@@ -4,7 +4,7 @@
             <img src="/avatars/avatar.jpg" alt="avatar" />
             <label for="username">Nombre de usuario</label>
             <input type="text" placeholder="Jane Smith" v-model="username" />
-            <button @click="$router.push('/')">Acceder</button>
+            <button @click="toGoHome">Acceder</button>
         </div>
     </div>
 </template>
@@ -12,9 +12,21 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
 import usernameProfile from '../stores/profile.js';
 
+const router = useRouter()
+
+const { username: nombreDeUsuario } = storeToRefs(usernameProfile())
+const searchName = ref('')
+
 const username = ref(usernameProfile().username)
+
+function toGoHome(){
+  router.push({ name: 'homeMain' })
+  nombreDeUsuario.value = username.value
+}
 
 
 </script>
