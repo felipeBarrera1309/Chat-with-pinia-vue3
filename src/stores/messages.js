@@ -22,6 +22,9 @@ const messages = defineStore('messages', {
     getters: {
         findMessageByID: (state) => (channelId) => {
             return state.messages.filter(ele => ele.channelId === channelId)
+        },
+        findMessagesUnread: (state) => (channelId) => {
+            return state.findMessageByID(channelId).filter(messages => !messages.read).length
         }
     }
 })

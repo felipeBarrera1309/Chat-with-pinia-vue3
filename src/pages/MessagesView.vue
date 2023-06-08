@@ -48,7 +48,7 @@ const title = ref('')
 const people = reactive()
 
 const messagesView = computed(() => {
-  return useMessagesStore().messages.map(element => {
+  return useMessagesStore().findMessageByID(Number(channelId.value)).map(element => {
     const imAuthor = useProfileStore()
     if(imAuthor.id !== element.author) return element
     return {

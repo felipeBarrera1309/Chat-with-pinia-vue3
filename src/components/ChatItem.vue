@@ -1,32 +1,33 @@
+<template>
+    <RouterLink
+      :to="`${id}`"
+      class="chat-item"
+    >
+      <h5>{{ name }}</h5>
+      <div class="badge" v-if="messages">{{ messages }}</div>
+    </RouterLink>
+</template>
+
+
 <script setup>
 import { RouterLink } from 'vue-router'
 
 const props = defineProps({
-  id: {
-    type: Number,
-    default: 0
-  },
-  name:{
-    type: String,
-    default: ''
-  },
-  messages:{
-    type: Number,
-    default: 0
-  }
+    id: {
+      type: Number,
+      default: 0
+    },
+    name:{
+      type: String,
+      default: ''
+    },
+    messages:{
+      type: Number,
+      default: 0
+    }
 })
 
 </script>
-
-<template>
-  <RouterLink
-    :to="`${id}`"
-    class="chat-item"
-  >
-    <h5>{{ name }}</h5>
-    <div class="badge" v-if="messages">{{ messages }}</div>
-  </RouterLink>
-</template>
 
 <style lang="scss" scoped>
 .chat-item {
