@@ -12,7 +12,7 @@
               </div>
             </div>
         </header>
-        <div class="content">
+        <div class="content" ref="refContentChat">
             <MessageItem
               v-for="message in messagesView"
               :key="message.id"
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, nextTick, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageItem from '@/components/MessageItem.vue'
 import useMessagesStore from '../stores/messages.js';
@@ -48,11 +48,26 @@ const channelId = ref(null)
 const title = ref('')
 const people = reactive(useContacts().getContacts)
 const write = ref('')
+const refContentChat = ref()
 
-function addMessage(value){
-  if(write.value.trim() !== ''){
+onBeforeMount(() => {
+  setTimeout(() => {
+    scrollToBottom()
+  }, 1)
+})
+
+function addMessage(){
+  if(write.value.trim() === ''){
+    write.value = '';
+    return
+  }else{
       useMessagesStore().addMessagesToChannel(Number(route.params.id), write.value);
       write.value = ''
+      nextTick(() => {
+        scrollToBottom()
+        console.log('Esto vale el top: ', refContentChat.value.scrollTop);
+        console.log('Esto value el height: ', refContentChat.value.scrollHeight);
+      })
   }
 }
 
@@ -67,11 +82,8 @@ const messagesView = computed(() => {
     }
   })
 })
-
-const scrollToBottom = () => {
-  end.value?.scrollIntoView({
-    behavior: 'smooth'
-  })
+function scrollToBottom(){
+  refContentChat.value.scrollTop = refContentChat.value.scrollHeight;
 }
 
 watch(
@@ -79,12 +91,12 @@ watch(
   (id) => {
     channelId.value = id
     title.value = useChannelName().seeNameChannel(Number(id))?.name
-    scrollToBottom()
+    setTimeout(() => {
+      scrollToBottom()
+    }, 1)
   },
   { immediate: true }
 )
-
-scrollToBottom()
 </script>
 
 <style lang="scss" scoped>
@@ -107,6 +119,7 @@ scrollToBottom()
   }
   .content {
     @apply flex flex-col gap-4 p-4 h-full overflow-y-auto;
+    scroll-behavior: smooth;
   }
   .footer {
     @apply flex p-2;
