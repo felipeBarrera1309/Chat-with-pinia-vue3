@@ -63,9 +63,6 @@ function addMessage(){
   }else{
       useMessagesStore().addMessagesToChannel(Number(route.params.id), write.value);
       write.value = ''
-      nextTick(() => {
-        scrollToBottom()
-      })
   }
 }
 
