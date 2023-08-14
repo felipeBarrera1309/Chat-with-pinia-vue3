@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, onBeforeMount } from 'vue'
+import { ref, reactive, computed, watch, nextTick, onBeforeMount, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageItem from '@/components/MessageItem.vue'
 import useMessagesStore from '../stores/messages.js';
@@ -65,11 +65,20 @@ function addMessage(){
       write.value = ''
       nextTick(() => {
         scrollToBottom()
-        console.log('Esto vale el top: ', refContentChat.value.scrollTop);
-        console.log('Esto value el height: ', refContentChat.value.scrollHeight);
       })
   }
 }
+
+onMounted(() => {
+  const observando = new MutationObserver((mutation) => {
+    mutation.forEach(el => {
+      if(el.type === 'childList', el.addedNodes.length){
+        scrollToBottom()
+      }
+    })
+  })
+  observando.observe(refContentChat.value, { childList: true })
+})
 
 const messagesView = computed(() => {
   return useMessagesStore().findMessageByID(Number(channelId.value)).map(element => {
