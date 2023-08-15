@@ -14,8 +14,8 @@
         </header>
         <div class="content" ref="refContentChat">
             <MessageItem
-              v-for="message in messagesView"
-              :key="message.id"
+              v-for="(message, index) in messagesView"
+              :key="index"
               :avatar="message.imAuthor.avatar"
               :author="message.imAuthor.name"
               :message="message.message"
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, onBeforeMount, onMounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import MessageItem from '@/components/MessageItem.vue'
 import useMessagesStore from '../stores/messages.js';
@@ -50,11 +50,6 @@ const people = reactive(useContacts().getContacts)
 const write = ref('')
 const refContentChat = ref()
 
-onBeforeMount(() => {
-  setTimeout(() => {
-    scrollToBottom()
-  }, 1)
-})
 
 function addMessage(){
   if(write.value.trim() === ''){
@@ -67,6 +62,7 @@ function addMessage(){
 }
 
 onMounted(() => {
+  scrollToBottom()
   const observando = new MutationObserver((mutation) => {
     mutation.forEach(el => {
       if(el.type === 'childList', el.addedNodes.length){
@@ -97,9 +93,6 @@ watch(
   (id) => {
     channelId.value = id
     title.value = useChannelName().seeNameChannel(Number(id))?.name
-    setTimeout(() => {
-      scrollToBottom()
-    }, 1)
   },
   { immediate: true }
 )
