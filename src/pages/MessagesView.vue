@@ -21,6 +21,10 @@
               :message="message.message"
               :time="message.timestamp"
               :is-self="message.self"
+
+
+
+              
             />
             <span ref="end"></span>
         </div>
