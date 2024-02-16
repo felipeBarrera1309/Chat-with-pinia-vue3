@@ -27,6 +27,7 @@
               
             />
             <span ref="end"></span>
+            <p>{{ 'Tuco es un gato y un perro a la vez porque hace wof' }}</p>
         </div>
         <form class="footer" @submit.prevent="addMessage">
             <textarea rows="3" v-model="write" @keypress.enter="addMessage" />
