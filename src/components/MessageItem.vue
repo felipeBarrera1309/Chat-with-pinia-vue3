@@ -6,6 +6,7 @@
     </div>
     <div class="content">
       <div class="details" :class="{ self: isSelf }">
+        <p>{{ 'NS' }}</p>
         <h5>{{ author }}</h5>
         <p>{{ time }}</p>
       </div>
