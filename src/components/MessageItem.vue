@@ -9,6 +9,7 @@
         <p>{{ time }}</p>
       </div>
       <p class="message" :class="{ self: isSelf }">{{ message }}</p>
+      <p>{{ 'mt-09' }}</p>
     </div>
   </div>
 </template>
