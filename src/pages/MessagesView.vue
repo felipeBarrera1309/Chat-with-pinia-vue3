@@ -37,6 +37,8 @@
             <textarea rows="3" v-model="write" @keypress.enter="addMessage" />
             <button>
               <Icon icon="carbon:send-alt" />
+              <p>{{ 'GW flamma' }}</p>
+              <p>{{ 'scoot' }}</p>
             </button>
         </form>
     </div>
