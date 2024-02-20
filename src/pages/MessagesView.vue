@@ -1,5 +1,7 @@
 <template>
     <div class="messages">
+      <p>{{ 'Negus' }}</p>
+      <p>{{ 'Copirris' }}</p>
         <header>
             <h2>{{ title }}</h2>
             <div class="people-list">
