@@ -13,6 +13,8 @@
             </div>
         </header>
         <div class="content" ref="refContentChat">
+          <p>{{ 'Brunillo' }}</p>
+          <p>{{ 'Copillo' }}</p>
             <MessageItem
               v-for="(message, index) in messagesView"
               :key="index"
