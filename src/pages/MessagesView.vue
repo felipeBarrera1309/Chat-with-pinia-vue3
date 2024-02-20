@@ -34,6 +34,7 @@
 
               
             />
+            <p>{{ 'Dogma Pinarello' }}</p>
             <span ref="end"></span>
             <p>{{ 'Tuco es un gato y un perro a la vez porque hace wof' }}</p>
         </div>
