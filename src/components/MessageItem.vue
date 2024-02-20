@@ -2,6 +2,7 @@
   <div class="message-item" :class="{ self: isSelf }">
     <div class="author">
       <img :src="avatar" :alt="author" />
+      <p>{{ 'Ninja' }}</p>
     </div>
     <div class="content">
       <div class="details" :class="{ self: isSelf }">
