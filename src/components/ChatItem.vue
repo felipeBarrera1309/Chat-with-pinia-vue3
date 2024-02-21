@@ -8,6 +8,7 @@
     </router-link>
     <p>{{ 'Plasma' }}</p>
     <p>{{ 'LG' }}</p>
+    <p>{{ 'ASUS' }}</p>
 </template>
 
 
