@@ -7,6 +7,7 @@
       <div class="badge" v-if="messages">{{ messages }}</div>
     </router-link>
     <p>{{ 'Plasma' }}</p>
+    <p>{{ 'LG' }}</p>
 </template>
 
 
