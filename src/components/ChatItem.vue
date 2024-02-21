@@ -6,6 +6,7 @@
       <h5>{{ name }}</h5>
       <div class="badge" v-if="messages">{{ messages }}</div>
     </router-link>
+    <p>{{ 'Plasma' }}</p>
 </template>
 
 
